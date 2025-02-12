@@ -74,7 +74,7 @@
 
     var client_id = "{{ session_id }}";
     document.querySelector("#ws-id").textContent = client_id;
-    var ws = new WebSocket(`ws://192.168.1.222:8000/ws/${client_id}`);
+    var ws = new WebSocket(`wss://helpbotx:10000/ws/${client_id}`);
     ws.onmessage = function (event) {
         var messages = document.getElementById('messages');
         var message = document.createElement('div');
