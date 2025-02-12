@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static\\style.css">
+    <link rel="icon" type="image/x-icon" href="/static/logo_b.png">
+    <script src="static\\script.js" defer></script>
+    <title>Виртуальный помощник</title>
+</head>
+<body>
+    <div class="navbar">
+        <div class="long-title">
+            <h3 class="long-version">Виртуальный помощник</h3>
+            <h3 class="short-version">Виртуальный помощник</h3>
+        </div>
+        <div class="hamburger-menu">
+            <input id="menu__toggle" type="checkbox" />
+            <label class="menu__btn" for="menu__toggle">
+                <span></span>
+            </label>
+
+            <ul class="menu__box">
+                <li><a class="menu__item" href="/">На главную</a></li>
+                <li><a class="menu__item" href="https://intuit.kg/.kg/">МУИТ</a></li>
+                <li><a class="menu__item" href="https://comtehno.kg/">КОМТЕХНО</a></li>
+                <!-- <li><a class="menu__item" href="https://comtehno.kg/timetable/">Расписание</a></li> -->
+                <li><a class="menu__item" href="/chat">Чат  <em>beta</em></a></li>
+                <li><a class="menu__item" href="/clear_history" id="clear-history">Очистить историю</a></li>
+                <li><a class="menu__item" href="/info">Справки</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div id="chat-container">
+            <div id="hello" class="chat-message-bot" {% if chat_history|length > 0 %}style='display: none;'{% endif %}>
+
+                <span class="avatar">
+                    <img src="/static/logo_b.png" alt="Avatar">
+                </span>
+                <div class="info-bot">
+                    <div class="name-bot" id="name-bot">Виртуальный помощник</div>
+                    <div id="introduction">
+                        <p style="margin-bottom: 0px;">Привет! 😊</p>
+                        <p style="margin: 5px 0px;">Я — твой виртуальный помощник, всегда готова помочь! 💡</p>
+                        <ul style="margin: 5px 0px;">
+                            <li>Нужно решить задачу? 🧠</li>
+                            <li>Помощь в программировании? 👩‍💻</li>
+                            <li>Ответ на любой вопрос? 🔍</li>
+                        </ul>
+                        <p style="margin: 5px 0px;">Обращайся, я здесь, чтобы поддержать и помочь! 🚀🙌</p>
+                    </div>
+                </div>
+            </div>
+            {% for message in chat_history %}
+                {% set index = loop.index0 %}
+                {% if message.role == "user" %}
+                    <div class="chat-message-user">
+                        <div class="info-user">
+                            <div class="message-content for-user" id="user-message-{{ index }}">{{ message.content | safe }}</div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="chat-message-bot">
+                        <span class="avatar">
+                            <img src="static\\logo_b.png" alt="Avatar">
+                        </span>
+                        <div class="info-bot">
+                            <div class="name-bot">Виртуальный помощник</div>
+                            <div class="message-content" id="assistant-message-{{ index }}">{{ message.content | safe }}</div>
+                            <div class="info {% if index == message_count - 1 %}last{% endif %}">
+                                <audio id="myAudio" style="display: none;" controls>
+                                    <source id="audioSource" type="audio/mpeg">
+                                    Ваш браузер не поддерживает элемент audio.
+                                </audio>
+                                <div class="wrap-svg {% if index == message_count - 1 %}last{% endif %}">
+                                    <svg fill="#d1d5db" width="20px" height="20px" viewBox="0 0 24 24" id="sound" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color" stroke="#d1d5db" onclick="sendSynthesisRequest('{{ index }}')">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path id="secondary" d="M18.36,5.64a9,9,0,0,1,0,12.72" style="fill: none; stroke: #d1d5db; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+                                            <path id="secondary-2" data-name="secondary" d="M15.54,8.46a5,5,0,0,1,0,7.08" style="fill: none; stroke: #d1d5db; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+                                            <path id="primary" d="M11,5V19L7,15H4a1,1,0,0,1-1-1V10A1,1,0,0,1,4,9H7Z" style="fill: none; stroke: #d1d5db; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+                                        </g>
+                                    </svg>
+                                    <svg fill="#d1d5db" height="20px" width="20px" version="1.1" id="copy-button" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-46 -46 552.00 552.00" xml:space="preserve" stroke="#d1d5db" stroke-width="0.0046" transform="rotate(0)" onclick="copyText('{{ index }}')">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.9200000000000002"></g>
+                                        <g id="SVGRepo_iconCarrier"> <g> <g> <g>
+                                            <path d="M425.934,0H171.662c-18.122,0-32.864,14.743-32.864,32.864v77.134h30V32.864c0-1.579,1.285-2.864,2.864-2.864h254.272 c1.579,0,2.864,1.285,2.864,2.864v254.272c0,1.58-1.285,2.865-2.864,2.865h-74.729v30h74.729 c18.121,0,32.864-14.743,32.864-32.865V32.864C458.797,14.743,444.055,0,425.934,0z"></path>
+                                            <path d="M288.339,139.998H34.068c-18.122,0-32.865,14.743-32.865,32.865v254.272C1.204,445.257,15.946,460,34.068,460h254.272 c18.122,0,32.865-14.743,32.865-32.864V172.863C321.206,154.741,306.461,139.998,288.339,139.998z M288.341,430H34.068 c-1.58,0-2.865-1.285-2.865-2.864V172.863c0-1.58,1.285-2.865,2.865-2.865h254.272c1.58,0,2.865,1.285,2.865,2.865v254.273h0.001 C291.206,428.715,289.92,430,288.341,430z"></path></g> </g> </g>
+                                        </g>
+                                    </svg>
+                                    <svg fill="#d1d5db" width="20px" height="20px" viewBox="0 0 1024.00 1024.00" id="bad_answer" xmlns="http://www.w3.org/2000/svg" class="icon" transform="rotate(0)matrix(-1, 0, 0, 1, 0, 0)" onclick="bad_answer('{{ index }}')">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M885.9 490.3c3.6-12 5.4-24.4 5.4-37 0-28.3-9.3-55.5-26.1-77.7 3.6-12 5.4-24.4 5.4-37 0-28.3-9.3-55.5-26.1-77.7 3.6-12 5.4-24.4 5.4-37 0-51.6-30.7-98.1-78.3-118.4a66.1 66.1 0 0 0-26.5-5.4H144c-17.7 0-32 14.3-32 32v364c0 17.7 14.3 32 32 32h129.3l85.8 310.8C372.9 889 418.9 924 470.9 924c29.7 0 57.4-11.8 77.9-33.4 20.5-21.5 31-49.7 29.5-79.4l-6-122.9h239.9c12.1 0 23.9-3.2 34.3-9.3 40.4-23.5 65.5-66.1 65.5-111 0-28.3-9.3-55.5-26.1-77.7zM184 456V172h81v284h-81zm627.2 160.4H496.8l9.6 198.4c.6 11.9-4.7 23.1-14.6 30.5-6.1 4.5-13.6 6.8-21.1 6.7a44.28 44.28 0 0 1-42.2-32.3L329 459.2V172h415.4a56.85 56.85 0 0 1 33.6 51.8c0 9.7-2.3 18.9-6.9 27.3l-13.9 25.4 21.9 19a56.76 56.76 0 0 1 19.6 43c0 9.7-2.3 18.9-6.9 27.3l-13.9 25.4 21.9 19a56.76 56.76 0 0 1 19.6 43c0 9.7-2.3 18.9-6.9 27.3l-14 25.5 21.9 19a56.76 56.76 0 0 1 19.6 43c0 19.1-11 37.5-28.8 48.4z"></path>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="presentation{% if chat_history|length > 0 %} hidden{% endif %}">
+        <div class="blok one visible" onclick="sendQuestion('Какие специальности есть в колледже?')">
+            <p class="bold-blok"><b>Какие специальности</b><br> есть в колледже?</p>
+            <div class="svg">
+                <svg width="24" height="24" viewBox="0 -2 24 24" fill="#232323">
+                    <path d="M12 6V18M12 6L7 11M12 6L17 11" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="blok two" onclick="sendQuestion('Сколько стоит в этом учебном году контракт?')">
+            <p class="bold-blok"><b>Сколько стоит </b><br>в этом учебном году контракт?</p>
+            <div class="svg">
+                <svg width="24" height="24" viewBox="0 -2 24 24" fill="#232323">
+                    <path d="M12 6V18M12 6L7 11M12 6L17 11" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="blok three visible" onclick="sendQuestion('Как связатся с приемной комиссией?')">
+            <p class="bold-blok"><b>Приемная комиссия</b><br> номер Whatsapp</p>
+            <div class="svg">
+                <svg width="24" height="24" viewBox="0 -2 24 24" fill="#232323">
+                    <path d="M12 6V18M12 6L7 11M12 6L17 11" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="blok four" onclick="sendQuestion('Какие документы подать при поступлении?')">
+            <p class="bold-blok"><b>Какие документы </b><br> подать при поступлении?</p>
+            <div class="svg">
+                <svg width="24" height="24" viewBox="0 -2 24 24" fill="#232323">
+                    <path d="M12 6V18M12 6L7 11M12 6L17 11" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div id="copy-notification" style="display: none;">Текст скопирован!</div>
+    <form id="chat-form" autocomplete="off">
+        <div class="wrap-chat">
+            <div class="chat-input">
+                <textarea name="question" id="question-input" placeholder="Сообщение…" rows="1" autofocus></textarea>
+                <button type="submit" id="send-button" class="send-button">
+                    <svg width="24" height="24" viewBox="0 -2 24 24" fill="#232323"> 
+                        <path d="M12 6V18M12 6L7 11M12 6L17 11" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <script>  
+// Сохраняем ширину экрана в константу при загрузке страницы
+const initialVisibleWidth = document.documentElement.clientWidth;
+console.log(initialVisibleWidth);
+
+document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("chat-form");
+            const input = document.getElementById("question-input");
+            const chatContainer = document.getElementById("chat-container");
+
+            // Функция добавления сообщения
+            function addMessage(role, content, isThinking = false) {
+    const messages = chatContainer.querySelectorAll(".chat-message-user, .chat-message-bot");
+    messages.forEach(msg => msg.querySelector(".info")?.classList.remove("last")); // Убираем старый last
+
+    // Прокручиваем страницу вниз
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth',
+        block: 'end'
+    });
+
+    // Получаем элемент presentation внутри обработчика события, чтобы он был доступен
+    const presentation = document.querySelector('.presentation');
+    const hello = document.getElementById('hello');
+
+    // Если presentation не найден, это может вызвать ошибку
+    if (!presentation) {
+        console.error("Элемент presentation не найден.");
+        return; // Прерываем выполнение, если элемент не найден
+    }
+
+    const messageIndex = messages.length; // Новый индекс
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add(role === "user" ? "chat-message-user" : "chat-message-bot");
+
+    if (role === "user") {
+        messageDiv.innerHTML = `
+            <div class="info-user">
+                <div class="message-content for-user" id="user-message-${messageIndex}">${content}</div>
+            </div>`;
+    } else {
+        messageDiv.innerHTML = `
+            <span class="avatar">
+                <img src="static\\logo_b.png" alt="Avatar">
+            </span>
+            <div class="info-bot">
+                <div class="name-bot">Виртуальный помощник</div>
+                <div class="message-content" id="assistant-message-${messageIndex}">
+                    <div class="loader">
+                        <span class="loader__element"></span>
+                        <span class="loader__element"></span>
+                        <span class="loader__element"></span>
+                    </div>
+                </div>
+                <div class="info last" id="message-info-${messageIndex}">
+                    <audio id="myAudio" style="display: none;" controls>
+                        <source id="audioSource" type="audio/mpeg">
+                        Ваш браузер не поддерживает элемент audio.
+                    </audio>
+                    <div class="wrap-svg last">
+                        <svg fill="#d1d5db" width="20px" height="20px" viewBox="0 0 24 24" id="sound" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color" stroke="#d1d5db" onclick="sendSynthesisRequest('${messageIndex}')">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path id="secondary" d="M18.36,5.64a9,9,0,0,1,0,12.72" style="fill: none; stroke: #d1d5db; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+                                <path id="secondary-2" data-name="secondary" d="M15.54,8.46a5,5,0,0,1,0,7.08" style="fill: none; stroke: #d1d5db; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+                                <path id="primary" d="M11,5V19L7,15H4a1,1,0,0,1-1-1V10A1,1,0,0,1,4,9H7Z" style="fill: none; stroke: #d1d5db; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+                            </g>
+                        </svg>
+                        <svg fill="#d1d5db" height="20px" width="20px" version="1.1" id="copy-button" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-46 -46 552.00 552.00" xml:space="preserve" stroke="#d1d5db" stroke-width="0.0046" transform="rotate(0)" onclick="copyText('${messageIndex}')">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.9200000000000002"></g>
+                            <g id="SVGRepo_iconCarrier"> <g> <g> <g>
+                                <path d="M425.934,0H171.662c-18.122,0-32.864,14.743-32.864,32.864v77.134h30V32.864c0-1.579,1.285-2.864,2.864-2.864h254.272 c1.579,0,2.864,1.285,2.864,2.864v254.272c0,1.58-1.285,2.865-2.864,2.865h-74.729v30h74.729 c18.121,0,32.864-14.743,32.864-32.865V32.864C458.797,14.743,444.055,0,425.934,0z"></path>
+                                <path d="M288.339,139.998H34.068c-18.122,0-32.865,14.743-32.865,32.865v254.272C1.204,445.257,15.946,460,34.068,460h254.272 c18.122,0,32.865-14.743,32.865-32.864V172.863C321.206,154.741,306.461,139.998,288.339,139.998z M288.341,430H34.068 c-1.58,0-2.865-1.285-2.865-2.864V172.863c0-1.58,1.285-2.865,2.865-2.865h254.272c1.58,0,2.865,1.285,2.865,2.865v254.273h0.001 C291.206,428.715,289.92,430,288.341,430z"></path></g> </g> </g>
+                            </g>
+                        </svg>
+                        <svg fill="#d1d5db" width="20px" height="20px" viewBox="0 0 1024.00 1024.00" id="bad_answer" xmlns="http://www.w3.org/2000/svg" class="icon" transform="rotate(0)matrix(-1, 0, 0, 1, 0, 0)" onclick="bad_answer('${messageIndex}')">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M885.9 490.3c3.6-12 5.4-24.4 5.4-37 0-28.3-9.3-55.5-26.1-77.7 3.6-12 5.4-24.4 5.4-37 0-28.3-9.3-55.5-26.1-77.7 3.6-12 5.4-24.4 5.4-37 0-51.6-30.7-98.1-78.3-118.4a66.1 66.1 0 0 0-26.5-5.4H144c-17.7 0-32 14.3-32 32v364c0 17.7 14.3 32 32 32h129.3l85.8 310.8C372.9 889 418.9 924 470.9 924c29.7 0 57.4-11.8 77.9-33.4 20.5-21.5 31-49.7 29.5-79.4l-6-122.9h239.9c12.1 0 23.9-3.2 34.3-9.3 40.4-23.5 65.5-66.1 65.5-111 0-28.3-9.3-55.5-26.1-77.7zM184 456V172h81v284h-81zm627.2 160.4H496.8l9.6 198.4c.6 11.9-4.7 23.1-14.6 30.5-6.1 4.5-13.6 6.8-21.1 6.7a44.28 44.28 0 0 1-42.2-32.3L329 459.2V172h415.4a56.85 56.85 0 0 1 33.6 51.8c0 9.7-2.3 18.9-6.9 27.3l-13.9 25.4 21.9 19a56.76 56.76 0 0 1 19.6 43c0 9.7-2.3 18.9-6.9 27.3l-13.9 25.4 21.9 19a56.76 56.76 0 0 1 19.6 43c0 9.7-2.3 18.9-6.9 27.3l-14 25.5 21.9 19a56.76 56.76 0 0 1 19.6 43c0 19.1-11 37.5-28.8 48.4z"></path>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>`;
+    }
+    // Проверяем, есть ли сообщения
+    if (messageIndex.length > 0) {
+            presentation.classList.remove('hidden');
+        } else {
+            presentation.classList.add('hidden');
+            hello.style.display = 'none';
+        }
+
+
+    chatContainer.appendChild(messageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight; // Прокрутка вниз
+    return messageIndex;
+}
+
+let isRequestInProgress = false;  // Флаг, чтобы отслеживать состояние запроса
+form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    
+    // Если запрос уже в процессе, ничего не делаем
+    if (isRequestInProgress) return;
+
+    let message = input.value.trim();
+    if (!message) return;
+
+    // Очищаем поле ввода сразу после отправки
+    input.style.height = "24px";
+    input.value = "";
+
+
+    // Убираем класс last у всех предыдущих элементов
+    const wrapSvgElements = document.querySelectorAll(".wrap-svg");
+    wrapSvgElements.forEach((el) => {
+        el.classList.remove("last");
+    });
+
+    // Добавляем сообщение пользователя
+    addMessage("user", message);
+
+    // Показываем анимацию загрузки вместо текста
+    let botMessageIndex = addMessage("bot", "", true);
+
+    // Устанавливаем флаг в true, чтобы заблокировать кнопку
+    isRequestInProgress = true;
+    // Блокируем кнопку отправки
+    document.getElementById("send-button").disabled = true;
+
+    let formData = new FormData();
+    formData.append("question", message);
+
+    let response = await fetch("/api", {
+        method: "POST",
+        body: formData
+    });
+
+    let data = await response.json();
+    
+    if (data.response) {
+        let botMessageElement = document.getElementById(`assistant-message-${botMessageIndex}`);
+        botMessageElement.innerHTML = data.response; // Меняем анимацию на текст ответа
+        // Вызываем функцию при загрузке страницы
+        updateHighlightWidth();
+    } else {
+        document.getElementById(`assistant-message-${botMessageIndex}`).textContent = `Ошибка: ${data.error}`;
+    }
+
+    // Убираем класс last у всех элементов и добавляем его последнему
+    const updatedWrapSvgElements = document.querySelectorAll(".wrap-svg");
+    const lastWrapSvgElement = updatedWrapSvgElements[updatedWrapSvgElements.length - 1];
+    lastWrapSvgElement.classList.add("last");  // Добавляем класс last к последнему элементу
+
+    // Прокручиваем страницу вниз
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+    });
+
+    // Разблокируем кнопку и сбрасываем флаг после завершения запроса
+    isRequestInProgress = false;
+    document.getElementById("send-button").disabled = false;
+});
+
+
+            // Отправка по Enter
+            input.addEventListener("keydown", function (event) {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    form.dispatchEvent(new Event("submit"));
+                }
+            });
+        });
+
+
+// Функция обновления ширины элементов с классом .highlight
+function updateHighlightWidth() {
+    const highlights = document.querySelectorAll('.highlight'); // Получаем все элементы с классом .highlight
+    let visibleWidth = initialVisibleWidth; // Используем сохранённую видимую ширину экрана по умолчанию
+
+    // Если окно изменилось, то берём текущую реальную видимую ширину экрана (без полос прокрутки)
+    if (document.documentElement.clientWidth !== initialVisibleWidth) {
+        visibleWidth = document.documentElement.clientWidth;
+    }
+    
+    console.log(visibleWidth);
+
+    // Для каждого элемента .highlight устанавливаем ширину
+    highlights.forEach((highlight) => {
+        // Устанавливаем ширину highlight как 80% от ширины экрана, но не более 689px
+        // Для мобильных устройств минимальная ширина 150px (например)
+        highlight.style.width = `${Math.min(visibleWidth * 0.8, 689)}px`;
+        // Добавим минимальную ширину для мобильных устройств
+        highlight.style.minWidth = '150px'; 
+    });
+}
+
+// Вызовем функцию при загрузке страницы
+window.addEventListener('load', updateHighlightWidth);
+
+// Добавляем обработчик события на изменение размера окна
+window.addEventListener('resize', updateHighlightWidth);
+
+
+
+    </script>
+
+</body>
+</html>

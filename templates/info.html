@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static\\style.css">
+    <link rel="icon" type="image/x-icon" href="/static/logo_b.png">
+    <title>Виртуальный помощник</title>
+</head>
+<body>
+    <!-- навигационная панель -->
+    <div class="navbar">
+        <div class="long-title">
+            <h3 class="long-version">Виртуальный помощник</h3>
+            <h3 class="short-version">Виртуальный помощник</h3>
+        </div>
+        <div class="hamburger-menu">
+            <input id="menu__toggle" type="checkbox" />
+            <label class="menu__btn" for="menu__toggle">
+                <span></span>
+            </label>
+
+            <ul class="menu__box">
+                <li><a class="menu__item" href="/">На главную</a></li>
+                <li><a class="menu__item" href="https://intuit.kg/.kg/">МУИТ</a></li>
+                <li><a class="menu__item" href="https://comtehno.kg/">КОМТЕХНО</a></li>
+                <!-- <li><a class="menu__item" href="https://comtehno.kg/timetable/">Расписание</a></li> -->
+                <li><a class="menu__item" href="/chat">Чат  <em>beta</em></a></li>
+                <!-- <li><a class="menu__item" href="#" id="clear-history">Очистить историю</a></li> -->
+                <li><a class="menu__item" href="/info">Справки</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- контент -->
+    <div class="content">
+        <h1>Справка по виртуальному помощнику</h1>
+
+        <section>
+            <h2>1. Как использовать бота</h2>
+            <ul>
+                <li><p>Просто введи сообщение в чат, и бот ответит.</p></li>
+                <li><p>Может помочь по любым вопросам: от программирования до советов по повседневной жизни, например, как решать математические задачи или выбрать фильм для вечера.</p></li>
+                <li><p>Поддерживаются голосовые ответы и преобразование текста в речь.</p></li>
+                <li><p>Контекст сообщений сохраняется, так что можно вести диалог.</p></li>
+                <li><p>Вопросы и контекст можно добавлять в реальном времени через FastAPI Docs — доступны соответствующие эндпоинты.</p></li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>2. Частые вопросы (FAQ)</h2>
+            <dl>
+                <dt>Q: Что делать, если бот не понимает запрос?</dt>
+                <dd>A: Попробуй переформулировать вопрос. Если проблема сохраняется, свяжись с разработчиком.</dd>
+                
+                <dt>Q: Как бот обрабатывает код?</dt>
+                <dd>A: Бот использует <span class="cpad">Pygments</span> для подсветки синтаксиса и <span class="cpad">mistune</span> для рендеринга Markdown.</dd>
+                
+                <dt>Q: Может ли бот конвертировать текст в речь?</dt>
+                <dd>A: Да, используется <span class="cpad">edge_tts</span> для синтеза речи.</dd>
+                
+                <dt>Q: Как бот запоминает контекст?</dt>
+                <dd>A: Бот анализирует историю сообщений с помощью <span class="cpad">TfidfVectorizer</span> и <span class="cpad">cosine_similarity.</span></dd>
+                
+                <dt>Q: Можно ли использовать голосовые команды?</dt>
+                <dd>A: Пока нет, но бот может озвучивать текст.</dd>
+                
+                <dt>Q: Можно ли изменять контекст и вопросы вручную?</dt>
+                <dd>A: Да, через <span class="cpad">FastAPI Docs</span> можно добавлять и редактировать данные в реальном времени.</dd>
+            </dl>
+        </section>
+        
+        <section>
+            <h2>3. Горячие клавиши и команды</h2>
+            <p>Горячие клавиши и команды пока нет, но скоро появятся.</p>
+        </section>
+        
+        <section>
+            <h2>4. О боте</h2>
+            <p>Этот виртуальный помощник основан на GPT, но имеет дополнительные возможности:</p>
+            <ul>
+                <li>Поддержка озвучки текста через <span class="cpad">edge_tts.</span></li>
+                <li>Обработка и анализ текста, используя <span class="cpad">TfidfVectorizer.</span></li>
+                <li>Подсветка кода с помощью <span class="cpad">Pygments.</span></li>
+                <li>Автоматические задачи через <span class="cpad">APScheduler.</span></li>
+                <li>Веб-интерфейс на <span class="cpad">FastAPI.</span></li>
+                <li>Добавление контекста и вопросов в реальном времени через FastAPI Docs.</li>
+                <li>Бот обновляется почти каждый день.</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>5. Обратная связь</h2>
+            <p>Если у тебя есть вопросы или предложения, напиши мне в <a class="link" href="https://t.me/ikymuco" target="_blank">Telegram @ikymuco</a>.</p>
+        </section>
+    </div>
+    <style>
+        .content div {
+            font-size: 18px;
+        }
+        span {
+            color: darkcyan;
+        }
+        body {
+            color: #d1d5db;
+        }
+        h2 {
+            color: #9fa1be;
+        }
+
+        section {
+            margin: 20px;
+            padding: 20px;
+            background-color: #444444;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        dl {
+            margin: 0;
+            padding: 0;
+        }
+
+        dt {
+            font-weight: bolder;
+            margin-bottom: 5px;
+            color: #c7586a;
+        }
+
+        dd {
+            margin: 0 0 15px 20px;
+            padding: 5px 0;
+            color: #ecf0f1;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .link {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .menu__box li {
+            margin: 0px;
+        }
+
+        .cpad {
+            /* font-weight: bold; */
+            background-color: #666666;
+            color: #ecf0f1;
+            padding: 2px 4px;
+            border-radius: 6px;
+        }
+    </style>
+</body>
+</html>
