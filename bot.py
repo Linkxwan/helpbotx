@@ -1,5 +1,7 @@
-TOKEN = TOKEN
-CHAT_ID = CHAT_ID
+import os
+
+TOKEN = os.environ("TOKEN")
+CHAT_ID = os.environ["CHAT_ID"]
 
 
 # bot.py
