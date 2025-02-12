@@ -1,5 +1,5 @@
-TOKEN = ''
-CHAT_ID = ''
+TOKEN = TOKEN
+CHAT_ID = CHAT_ID
 
 
 # bot.py
