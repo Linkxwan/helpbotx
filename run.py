@@ -54,7 +54,7 @@ else:
 
 # Функция планировщика
 async def scheduled_task():
-    print("Задача выполняется каждый час.")
+    print("Задача выполняется каждые 6 часов.")
     
     file_paths = ['data.json', 'logs.json', 'contexts.json', 'admin_questions.json', 'users_questions.json']
     await send_files(file_paths)
@@ -69,7 +69,7 @@ async def lifespan(app: FastAPI):
     scheduler = AsyncIOScheduler()
 
     # Добавляем задачу в планировщик
-    scheduler.add_job(scheduled_task, IntervalTrigger(hours=1)) 
+    scheduler.add_job(scheduled_task, IntervalTrigger(hours=6)) 
     scheduler.start()
 
     yield
@@ -748,7 +748,7 @@ async def get_answer(request: Request, question: str = Form(...)):
         # Отправляем запрос на другой эндпоинт для получения ответа
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                "http://127.0.0.1:8000/get_response",
+                "https://helpbotx.onrender.com/get_response",
                 params={"user_id": user_id, "question": question},
                 timeout=20  # Время ожидания ответа
             )
