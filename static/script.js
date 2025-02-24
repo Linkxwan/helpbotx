@@ -97,7 +97,7 @@ const chatContainer = document.getElementById("chat-container");
                 <img src="static\\logo_b.png" alt="Avatar">
             </span>
             <div class="info-bot">
-                <div class="name-bot">Виртуальный помощник</div>
+                
                 <div class="message-content" id="assistant-message-${messageIndex}">
                     <div class="loader">
                         <span class="loader__element"></span>
@@ -346,24 +346,24 @@ document.getElementById("clear-history").addEventListener("click", function() {
 
 
 // // ================ если нужно будет убрать имя бота ======================
-// function removeTopMarginForFirstP() {
-//     // Получаем все блоки с классом .chat-message-bot
-//     const botMessages = document.querySelectorAll('.chat-message-bot');
+function removeTopMarginForFirstP() {
+    // Получаем все блоки с классом .chat-message-bot
+    const botMessages = document.querySelectorAll('.chat-message-bot');
 
-//     // Проходим по каждому блоку
-//     botMessages.forEach((message) => {
-//         // Находим все элементы <p> внутри текущего блока
-//         const paragraphs = message.querySelectorAll('p');
+    // Проходим по каждому блоку
+    botMessages.forEach((message) => {
+        // Находим все элементы <p> внутри текущего блока
+        const paragraphs = message.querySelectorAll('p');
 
-//         // Если есть хотя бы один элемент <p>, устанавливаем margin-top для первого
-//         if (paragraphs.length > 0) {
-//             paragraphs[0].style.marginTop = '0px';
-//         }
-//     });
-// }
+        // Если есть хотя бы один элемент <p>, устанавливаем margin-top для первого
+        if (paragraphs.length > 0) {
+            paragraphs[0].style.marginTop = '0px';
+        }
+    });
+}
 
-// // Вызываем функцию, чтобы применить стили
-// removeTopMarginForFirstP();
+// Вызываем функцию, чтобы применить стили
+removeTopMarginForFirstP();
 // // ========================================================================
 
 // Выбираем textarea

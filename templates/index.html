@@ -6,13 +6,14 @@
     <link rel="stylesheet" href="static\\style.css">
     <link rel="icon" type="image/x-icon" href="/static/logo_b.png">
     <script src="static\\script.js" defer></script>
-    <title>Виртуальный помощник</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <title>Виртуальная помощница</title>
 </head>
 <body>
     <div class="navbar">
         <div class="long-title">
-            <h3 class="long-version">Виртуальный помощник</h3>
-            <h3 class="short-version">Виртуальный помощник</h3>
+            <h3 class="long-version">Виртуальная помощница</h3>
+            <h3 class="short-version">Виртуальная помощница</h3>
         </div>
         <div class="hamburger-menu">
             <input id="menu__toggle" type="checkbox" />
@@ -27,6 +28,7 @@
                 <!-- <li><a class="menu__item" href="https://comtehno.kg/timetable/">Расписание</a></li> -->
                 <li><a class="menu__item" href="/chat">Чат  <em>beta</em></a></li>
                 <li><a class="menu__item" href="/clear_history" id="clear-history">Очистить историю</a></li>
+                <li><a class="menu__item" href="/voice-mode">Режим разговора</a></li>
                 <li><a class="menu__item" href="/info">Справки</a></li>
             </ul>
         </div>
@@ -37,18 +39,19 @@
 
                 <span class="avatar">
                     <img src="/static/logo_b.png" alt="Avatar">
+                    <!-- ^_^ -->
                 </span>
                 <div class="info-bot">
-                    <div class="name-bot" id="name-bot">Виртуальный помощник</div>
+                    <!-- <div class="name-bot" id="name-bot">Виртуальный помощник</div> -->
                     <div id="introduction">
-                        <p style="margin-bottom: 0px;">Привет! 😊</p>
-                        <p style="margin: 5px 0px;">Я — твой виртуальный помощник, всегда готова помочь! 💡</p>
+                        <p style="margin: 5px 0px;">Привет! 😊</p>
+                        <p style="margin: 5px 0px;">Я всегда готова помочь вам с любыми вопросами! 💡</p>
                         <ul style="margin: 5px 0px;">
-                            <li>Нужно решить задачу? 🧠</li>
-                            <li>Помощь в программировании? 👩‍💻</li>
-                            <li>Ответ на любой вопрос? 🔍</li>
+                            <li>Нужна помощь с задачей? 🧠</li>
+                            <li>Что-то по программированию? 👩‍💻</li>
+                            <li>Или, может быть, есть вопрос? 🔍</li>
                         </ul>
-                        <p style="margin: 5px 0px;">Обращайся, я здесь, чтобы поддержать и помочь! 🚀🙌</p>
+                        <p style="margin: 5px 0px;">Я всегда рядом, не стесняйтесь обращаться! 🙌</p>
                     </div>
                 </div>
             </div>
@@ -66,7 +69,7 @@
                             <img src="static\\logo_b.png" alt="Avatar">
                         </span>
                         <div class="info-bot">
-                            <div class="name-bot">Виртуальный помощник</div>
+                            <!-- <div class="name-bot">^_^</div> -->
                             <div class="message-content" id="assistant-message-{{ index }}">{{ message.content | safe }}</div>
                             <div class="info {% if index == message_count - 1 %}last{% endif %}">
                                 <audio id="myAudio" style="display: none;" controls>
@@ -144,8 +147,16 @@
     <form id="chat-form" autocomplete="off">
         <div class="wrap-chat">
             <div class="chat-input">
-                <textarea name="question" id="question-input" placeholder="Сообщение…" rows="1" autofocus></textarea>
-                <button type="submit" id="send-button" class="send-button">
+                <textarea name="question" id="question-input" placeholder="Спросить что-нибудь..." rows="1" autofocus></textarea>
+                <button type="button" id="voice-button" class="voice-button">
+                    <svg width="24" height="24" viewBox="0 -2 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.5 4C8.67157 4 8 4.67157 8 5.5V18.5C8 19.3284 8.67157 20 9.5 20C10.3284 20 11 19.3284 11 18.5V5.5C11 4.67157 10.3284 4 9.5 4Z" fill="#232323"></path>
+                        <path d="M13 8.5C13 7.67157 13.6716 7 14.5 7C15.3284 7 16 7.67157 16 8.5V15.5C16 16.3284 15.3284 17 14.5 17C13.6716 17 13 16.3284 13 15.5V8.5Z" fill="#232323"></path>
+                        <path d="M4.5 9C3.67157 9 3 9.67157 3 10.5V13.5C3 14.3284 3.67157 15 4.5 15C5.32843 15 6 14.3284 6 13.5V10.5C6 9.67157 5.32843 9 4.5 9Z" fill="#232323"></path>
+                        <path d="M19.5 9C18.6716 9 18 9.67157 18 10.5V13.5C18 14.3284 18.6716 15 19.5 15C20.3284 15 21 14.3284 21 13.5V10.5C21 9.67157 20.3284 9 19.5 9Z" fill="#232323"></path>
+                    </svg>
+                </button>
+                <button type="submit" id="send-button" class="send-button" style="display: none;">
                     <svg width="24" height="24" viewBox="0 -2 24 24" fill="#232323"> 
                         <path d="M12 6V18M12 6L7 11M12 6L17 11" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
@@ -153,6 +164,65 @@
             </div>
         </div>
     </form>
+
+    <div id="container">
+        <div class="gooey" id="gooeyAnimation"></div>
+        <svg id="bubble" width="200" height="200" xmlns="http://www.w3.org/2000/svg" filter="url(#goo)">
+            <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+            </filter>
+            </defs>
+            <g>
+            <circle id="bubble_4" r="50" cy="95" cx="100">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="1s" repeatCount="indefinite"/>
+            </circle>
+            <circle id="bubble_3" r="50" cy="105" cx="100">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="360 105 100" to="0 105 100" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle id="bubble_2" r="50" cy="100" cx="95">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 100 95" to="360 100 95" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle id="bubble_1" r="50" cy="100" cx="105">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="360 100 105" to="0 100 105" dur="2.5s" repeatCount="indefinite"/>
+            </circle>
+            </g>
+        
+        </svg>
+        
+            <!-- Добавляем текст над bubble -->
+            <!-- Сообщение "Нажми, чтобы начать" -->
+            <div id="startMessage">Нажми, чтобы начать</div>
+            <div id="faceMessage" style="opacity: 0;">≧◡≦</div>
+                
+            <!-- Сообщение "Слушаю..." -->
+            <div id="listenMessage" style="display: none;">
+                Слушаю
+                <div class="dots-container">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                </div>
+            </div>
+        
+            <!-- Сообщение "Думаю..." -->
+            <div id="thinkingMessage" style="display: none;">
+                Думаю
+                <div class="dots-container">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                </div>
+            </div>
+
+            <div id="exitButton">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="style=bulk"> <g id="close-circle"> <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12Z" fill="#BFBFBF"></path> <path id="vector (Stroke)_2" fill-rule="evenodd" clip-rule="evenodd" d="M8.46967 8.46967C8.76257 8.17678 9.23744 8.17678 9.53033 8.46967L15.5303 14.4697C15.8232 14.7626 15.8232 15.2374 15.5303 15.5303C15.2374 15.8232 14.7625 15.8232 14.4696 15.5303L8.46967 9.53033C8.17678 9.23743 8.17678 8.76256 8.46967 8.46967Z" fill="#000000"></path> <path id="vector (Stroke)_3" fill-rule="evenodd" clip-rule="evenodd" d="M15.5303 8.46967C15.8232 8.76257 15.8232 9.23744 15.5303 9.53033L9.53033 15.5303C9.23743 15.8232 8.76256 15.8232 8.46967 15.5303C8.17678 15.2374 8.17678 14.7625 8.46967 14.4696L14.4697 8.46967C14.7626 8.17678 15.2374 8.17678 15.5303 8.46967Z" fill="#000000"></path> </g> </g> </g></svg>
+            </div>
+        
+        </div>
+        <audio style="display: none;" id="audioPlayer" controls></audio>
 
     <script>  
 // Сохраняем ширину экрана в константу при загрузке страницы
@@ -162,7 +232,35 @@ console.log(initialVisibleWidth);
 document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("chat-form");
             const input = document.getElementById("question-input");
+            const voiceButton = document.getElementById('voice-button');
+            const sendButton = document.getElementById('send-button');
             const chatContainer = document.getElementById("chat-container");
+            const container = document.getElementById("container");
+
+            // Функция для переключения между кнопками
+            function toggleButton() {
+                if (input.value.trim() === "") {
+                    voiceButton.style.display = 'block';
+                    sendButton.style.display = 'none';
+                } else {
+                    voiceButton.style.display = 'none';
+                    sendButton.style.display = 'block';
+                }
+            }
+            
+            // Включаем голосовой ввод
+            voiceButton.addEventListener('click', function() {
+                // Здесь можно интегрировать API для голосового ввода, например, Web Speech API.
+                console.log("Голосовой ввод активирован");
+                container.classList.toggle('blurred');  // Переключаем класс размытия
+                container.classList.toggle('visible');  // Плавное появление контейнера
+            });
+
+            // Переключаем кнопку при изменении текста в поле
+            input.addEventListener('input', toggleButton);
+
+            // Инициализируем состояние кнопок
+            // toggleButton();
 
             // Функция добавления сообщения
             function addMessage(role, content, isThinking = false) {
@@ -201,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <img src="static\\logo_b.png" alt="Avatar">
             </span>
             <div class="info-bot">
-                <div class="name-bot">Виртуальный помощник</div>
+                
                 <div class="message-content" id="assistant-message-${messageIndex}">
                     <div class="loader">
                         <span class="loader__element"></span>
@@ -271,6 +369,7 @@ form.addEventListener("submit", async function (event) {
     input.style.height = "24px";
     input.value = "";
 
+    toggleButton();
 
     // Убираем класс last у всех предыдущих элементов
     const wrapSvgElements = document.querySelectorAll(".wrap-svg");
@@ -305,7 +404,7 @@ form.addEventListener("submit", async function (event) {
         // Вызываем функцию при загрузке страницы
         updateHighlightWidth();
     } else {
-        document.getElementById(`assistant-message-${botMessageIndex}`).textContent = `Ошибка: ${data.error}`;
+        document.getElementById(`assistant-message-${botMessageIndex}`).textContent = `Привет! Ой, что-то пошло не так. Я не смогла найти ответ. Попробуй снова немного позже!`;
     }
 
     // Убираем класс last у всех элементов и добавляем его последнему
@@ -365,7 +464,391 @@ window.addEventListener('resize', updateHighlightWidth);
 
 
 
-    </script>
 
+let isListening = false;
+const gooeyElement = document.getElementById('gooeyAnimation');
+const bubbleElement = document.getElementById('bubble');
+const startMessage = document.getElementById('startMessage');
+const listenMessage = document.getElementById('listenMessage');
+const thinkingMessage = document.getElementById('thinkingMessage');
+const faceMessage = document.getElementById('faceMessage');
+const audioPlayer = document.getElementById("audioPlayer");
+
+let audioContext, analyser, dataArray;
+
+bubbleElement.addEventListener('click', (event) => {
+    if (recognition && recognition.state !== "started") {
+        bubbleElement.style.transform = "translate(-50%, -50%) scale(0.5)";
+        gooeyElement.style.opacity = '1';
+        bubbleElement.style.opacity = '0';
+        startMessage.style.display = 'none';
+        startRecording();
+    }
+});
+const exitButton = document.getElementById('exitButton');
+const container = document.getElementById("container");
+// Обработчик события для кнопки "exit"
+exitButton.addEventListener('click', function() {
+    if (isListening) {
+        // Останавливаем распознавание, если оно активно
+        recognition.stop();
+        console.log("Распознавание речи остановлено");
+
+        // Скрываем сообщение "Слушаю" и восстанавливаем интерфейс
+        listenMessage.style.display = 'none';
+        faceMessage.style.opacity = '1';
+        bubbleElement.style.transform = "translate(-50%, -50%) scale(1)";  // Восстановить пузырь
+        gooeyElement.style.opacity = '0';  // Скрыть элемент Gooey
+        bubbleElement.style.opacity = '1';  // Вернуть видимость пузыря
+
+        // Обновляем флаг состояния
+        isListening = false;
+    } else {
+        // Если распознавание не активно, просто переключаем классы для контейнера
+        console.log("Меняем состояние размытия и видимости");
+        container.classList.toggle('blurred');  // Переключаем класс размытия
+        container.classList.toggle('visible');  // Переключаем видимость контейнера
+    }
+});
+
+let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = navigator.language || 'ru-RU';
+recognition.continuous = false;
+recognition.interimResults = false;
+
+function startRecording() {
+    listenMessage.style.display = 'block';
+    faceMessage.style.opacity = '0';
+    if (recognition && recognition.state !== "started") {
+        try {
+            recognition.start();  // запуск распознавания
+        } catch (error) {
+            console.error("Распознавания речи уже запущено:");
+        }
+    }
+}
+
+// Обработчик начала распознавания
+recognition.onstart = function() {
+    console.log("Распознавание начато");
+    isListening = true;  // Устанавливаем флаг, что распознавание начато
+};
+
+// Добавляем обработчик события на окончание записи
+recognition.onend = function() {
+    console.log("Распознавание завершено");
+    isListening = false;  // Устанавливаем флаг, что распознавание завершено
+
+    listenMessage.style.display = 'none';
+    faceMessage.style.opacity = '1';
+    // thinkingMessage.style.display = 'none';
+    bubbleElement.style.transform = "translate(-50%, -50%) scale(1)";  
+    gooeyElement.style.opacity = '0';
+    bubbleElement.style.opacity = '1';
+};
+
+recognition.onresult = async (event) => {
+    let text = event.results[0][0].transcript;
+    console.log("Recognized: ", text);
+
+    // Останавливаем и очищаем плеер перед новым воспроизведением
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0; // Сброс времени на начало
+
+    bubbleElement.style.transform = "translate(-50%, -50%) scale(1)";
+    gooeyElement.style.opacity = '0';
+    bubbleElement.style.opacity = '1';
+    thinkingMessage.style.display = 'block';
+    faceMessage.style.opacity = '1';
+
+    // Добавляем сообщение пользователя
+    addMessage("user", text);
+
+    // Показываем анимацию загрузки вместо текста
+    let botMessageIndex = addMessage("bot", "", true);
+
+    // Устанавливаем флаг в true, чтобы заблокировать кнопку
+    isRequestInProgress = true;
+    // Блокируем кнопку отправки
+    document.getElementById("send-button").disabled = true;
+
+    let response = await fetch(`/live?question=${encodeURIComponent(text)}`);
+    let responseData = await response.json();
+
+    let audioUrl = responseData.created_file;
+
+    if (responseData.response) {
+        let botMessageElement = document.getElementById(`assistant-message-${botMessageIndex}`);
+        botMessageElement.innerHTML = responseData.response; // Меняем анимацию на текст ответа
+        // Вызываем функцию при загрузке страницы
+        updateHighlightWidth();
+    } else {
+        document.getElementById(`assistant-message-${botMessageIndex}`).textContent = `Привет! Ой, что-то пошло не так. Я не смогла найти ответ. Попробуй снова немного позже!`;
+    }
+
+    // Убираем класс last у всех элементов и добавляем его последнему
+    const updatedWrapSvgElements = document.querySelectorAll(".wrap-svg");
+    const lastWrapSvgElement = updatedWrapSvgElements[updatedWrapSvgElements.length - 1];
+    lastWrapSvgElement.classList.add("last");  // Добавляем класс last к последнему элементу
+
+    // Прокручиваем страницу вниз
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+    });
+
+    // Разблокируем кнопку и сбрасываем флаг после завершения запроса
+    isRequestInProgress = false;
+    document.getElementById("send-button").disabled = false;
+
+    // Устанавливаем новый источник аудио и воспроизводим
+    audioPlayer.src = audioUrl;
+    audioPlayer.play();
+
+    thinkingMessage.style.display = 'none';
+    faceMessage.style.opacity = '0';
+};
+
+function setupAudioAnalysis() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
+        const source = audioContext.createMediaElementSource(audioPlayer);
+        source.connect(analyser);
+        analyser.connect(audioContext.destination);
+        analyser.fftSize = 256;
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+    }
+}
+
+function animateBubble() {
+    if (!analyser) return;
+    analyser.getByteFrequencyData(dataArray);
+    let avgFrequency = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+    let scale = 1 + (avgFrequency / 255) * 1.3;
+    let scaleFace = 1 + (avgFrequency / 255) * 0.5;
+    bubbleElement.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    // faceMessage.style.transform = `translate(-50%, -50%) scale(${scaleFace})`;
+    // faceMessage.style.display = 'none';
+    requestAnimationFrame(animateBubble);
+}
+
+audioPlayer.addEventListener("play", () => {
+    setupAudioAnalysis();
+    audioContext.resume();
+    animateBubble();
+});
+
+audioPlayer.addEventListener("pause", () => {
+    bubbleElement.style.transform = "translate(-50%, -50%) scale(1)";
+});
+
+audioPlayer.addEventListener("ended", () => {
+    bubbleElement.style.transform = "translate(-50%, -50%) scale(0.5)";
+    gooeyElement.style.opacity = '1';
+    bubbleElement.style.opacity = '0';
+    startRecording();
+});
+    </script>
+<style>
+    #container {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        
+        opacity: 0;  /* Начальная непрозрачность (контейнер скрыт) */
+        pointer-events: none;  /* Отключаем взаимодействие с контейнером, пока он скрыт */
+    }
+
+    #container.visible {
+        transition: background-color 0.2s ease, backdrop-filter 0.2s ease; /* Плавное изменение фона и размытия */
+        opacity: 1; /* Делаем контейнер видимым */
+        pointer-events: all;  /* Включаем взаимодействие с контейнером, когда он видим */
+    }
+    
+    #container.blurred {
+        background-color: rgba(35, 35, 35, 0.3); /* Полупрозрачный фон */
+        backdrop-filter: blur(10px); /* Размытие фона */
+        -webkit-backdrop-filter: blur(10px); /* Для поддержки на старых браузерах Safari */
+    }
+    
+    #bubble {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1);
+        width: 200px;
+        height: 200px;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+        overflow: visible;
+        cursor: pointer;
+    }
+    
+    #bubble circle {
+        filter: url(#goo);
+    }
+    
+    #bubble_1, #bubble_2, #bubble_3, #bubble_4 {
+        fill: #e9f0f1;
+        r: 50%;
+    }
+    
+    .gooey {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 120px;
+        height: 60px;
+        transform: translate(-50%, -50%);
+        -webkit-filter: url(#goo);
+        filter: url(#goo);
+        transition: transform 0.5s ease, opacity 0.1s ease;
+        overflow: visible; 
+        opacity: 0;
+    }
+    
+    .gooey:after,
+    .gooey:before {
+        content: "";
+        position: absolute;
+        display: block;
+        background: #fff;
+        border-radius: 50%;
+    }
+    
+    .gooey:before {
+        margin: 6px;
+        width: 48px; 
+        height: 48px;
+        animation: leftGoo 3s ease infinite;
+    }
+    
+    .gooey:after {
+        width: 60px; 
+        height: 60px;
+        margin-left: 60px;
+        animation: rightGoo 3s ease infinite;
+    }
+    
+    @keyframes leftGoo {
+        50% {
+        transform: translateX(60px);
+        }
+    }
+    
+    @keyframes rightGoo {
+        50% {
+        transform: translateX(-60px);
+        }
+    }
+    
+    .gooey.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    .bubble-animation.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #exitButton {
+        position: absolute;
+        top: 90%;
+        left: 50%;
+        width: 50px;
+        height: 50px;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    #exitButton:hover {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    #faceMessage {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1);
+        color: #232323;
+        font-weight: bold;
+        font-size: 36px;
+        text-align: center;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        cursor: pointer;
+        pointer-events: none;
+    }
+    
+    #startMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            color: #232323;
+            font-weight: bold;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            pointer-events: none;
+        }
+    
+        #listenMessage, #thinkingMessage {
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            color: #e9f0f1;
+            font-weight: bold;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+    
+        /* Стили для анимации появления точек */
+        .dots-container {
+            display: inline-block;
+            font-size: 16px;
+            margin-left: 0px;
+        }
+    
+        .dots-container span {
+            opacity: 0;
+            animation: dotsAnimation 2s infinite;
+        }
+    
+        .dots-container span:nth-child(1) {
+            animation-delay: 0s;
+        }
+    
+        .dots-container span:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+    
+        .dots-container span:nth-child(3) {
+            animation-delay: 1s;
+        }
+    
+        @keyframes dotsAnimation {
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+</style>
 </body>
 </html>

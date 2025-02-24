@@ -56,7 +56,7 @@ else:
 async def scheduled_task():
     print("Задача выполняется каждые 6 часов.")
     
-    file_paths = ['data.json', 'logs.json', 'contexts.json', 'admin_questions.json', 'users_questions.json']
+    file_paths = ['data\\data.json', 'data\\logs.json', 'data\\contexts.json', 'data\\admin_questions.json', 'data\\users_questions.json']
     await send_files(file_paths)
 
 # Lifespan (жизненный цикл) приложения FastAPI
@@ -77,7 +77,7 @@ async def lifespan(app: FastAPI):
     print("Приложение завершает работу...")
     scheduler.shutdown()
 
-    file_paths = ['data.json', 'logs.json', 'contexts.json', 'admin_questions.json', 'users_questions.json']
+    file_paths = ['data\\data.json', 'data\\logs.json', 'data\\contexts.json', 'data\\admin_questions.json', 'data\\users_questions.json']
     await send_files(file_paths)
     
     await server_shutdown()
@@ -86,8 +86,8 @@ async def lifespan(app: FastAPI):
 # Инициализация приложения FastAPI с lifespan
 app = FastAPI(
     title="Виртуальный помощник",  # Заголовок API
-    description="**API для взаимодействия с виртуальным помощником, который отвечает на вопросы и помогает с решением задач.**",
-    version="2.0.4",  # Версия API
+    description="**Виртуальный помощник для ответов на вопросы, программирования и повседневных задач. Поддерживает голосовой ввод и озвучку текста.**",
+    version="2.4.7",  # Версия API
     contact={
         "name": "Developer ikymuco",
         "email": "xzzlinkzzx@gmail.com",
@@ -136,8 +136,8 @@ def load_data(file_name: str) -> dict:
 
 
 # Чтение данных из обоих файлов
-admin_data = load_data('admin_questions.json')
-user_data = load_data('users_questions.json')
+admin_data = load_data('data\\admin_questions.json')
+user_data = load_data('data\\users_questions.json')
 
 # Объединение данных
 data_combined = admin_data + user_data
@@ -156,7 +156,7 @@ except Exception as e:
 
 
 # Чтение данных контекстов
-contexts_data = load_data('contexts.json')
+contexts_data = load_data('data\\contexts.json')
 contexts = [item['context'] for item in contexts_data]
 
 
@@ -183,7 +183,7 @@ def add_entry(dictionary: dict, key: str, value) -> None:
 
 
 # Загрузка истории чата из файла
-file_name = "data.json"
+file_name = "data\\data.json"
 data = load_data(file_name)
 
 
@@ -231,6 +231,8 @@ async def synthesis(data: str, prefix: str = synthesis_path) -> Tuple[List[str],
     
     if detected_language == "ru":
         data = re.sub(r'!\s*', '. ', data)
+
+    # print(detected_language)
 
     unique_id = uuid.uuid4()  # Генерируем уникальный идентификатор для файла
     created_files = []  # Список для хранения путей к созданным файлам
@@ -300,7 +302,7 @@ async def remove_files(files: List[str], prefix: str = synthesis_path) -> None:
             logging.warning(f"Файл {file_path} не существует, не удалось удалить.")
 
 
-async def append_question_history_to_file(file_name: str = "question_history.txt") -> None:
+async def append_question_history_to_file(file_name: str = "data\\question_history.txt") -> None:
     try:
         async with aiofiles.open(file_name, "a", encoding="utf-8") as file:
             # Проверяем, есть ли вопросы в истории, чтобы не записывать пустоту
@@ -315,7 +317,7 @@ async def append_question_history_to_file(file_name: str = "question_history.txt
 
 @app.get("/download-question-history", tags=["download"])
 async def download_txt(response: Response):
-    file_path = "question_history.txt"
+    file_path = "data\\question_history.txt"
 
     if os.path.exists(file_path):
         return FileResponse(path=file_path,
@@ -327,7 +329,7 @@ async def download_txt(response: Response):
 
 @app.get("/download-bad-answers", tags=["download"])
 async def download_bad_answers_txt(response: Response):
-    file_path = "bad_answers.txt"
+    file_path = "data\\bad_answers.txt"
 
     if os.path.exists(file_path):
         return FileResponse(path=file_path,
@@ -339,7 +341,7 @@ async def download_bad_answers_txt(response: Response):
 
 @app.get("/download-json", tags=["download"])
 async def download_json(response: Response):
-    file_path = "data.json"
+    file_path = "data\\data.json"
     
     if os.path.exists(file_path):
         return FileResponse(path=file_path,
@@ -473,7 +475,7 @@ async def get_response(user_id: str, question: str):
             response = await g4f.ChatCompletion.create_async(
                 model='gpt-4o-mini',
                 messages=[{"role": "user", "content": template}],
-                provider=g4f.Provider.DDG
+                provider='PollinationsAI DDG',
             )
 
             # Обработка ответа, исправление блоков кода
@@ -533,10 +535,10 @@ async def add_question(question: str, answer: str, added_by: str = "user", passw
     # В зависимости от того, кто добавил вопрос, сохраняем его в соответствующий файл
     if added_by == "admin":
         admin_data.append(new_question)
-        save_data(admin_data, 'admin_questions.json')
+        save_data(admin_data, 'data\\admin_questions.json')
     else:
         user_data.append(new_question)
-        save_data(user_data, 'users_questions.json')
+        save_data(user_data, 'data\\users_questions.json')
     
     # Обновляем комбинированные данные и векторизацию
     data_combined.append(new_question)
@@ -574,10 +576,10 @@ async def delete_question(question: str, added_by: str = "admin", password: str 
     # Удаляем вопрос из соответствующего списка (admin_data или user_data)
     if question_found in admin_data:
         admin_data.remove(question_found)
-        save_data(admin_data, 'admin_questions.json')
+        save_data(admin_data, 'data\\admin_questions.json')
     elif question_found in user_data:
         user_data.remove(question_found)
-        save_data(user_data, 'users_questions.json')
+        save_data(user_data, 'data\\users_questions.json')
 
     # Удаляем вопрос из комбинированных данных
     data_combined = [item for item in data_combined if item != question_found]
@@ -644,7 +646,7 @@ async def add_context(new_context: str, added_by: str = "admin", password: str =
 
     # Добавляем в данные и сохраняем
     contexts_data.append(new_entry)
-    save_data(contexts_data, 'contexts.json')
+    save_data(contexts_data, 'data\\contexts.json')
     
     # Обновляем список контекстов из данных
     contexts = [item["context"] for item in contexts_data]
@@ -675,7 +677,7 @@ async def delete_context(context: str, added_by: str = "admin", password: str = 
 
     # Удаляем контекст из данных и сохраняем изменения
     contexts_data.remove(context_found)
-    save_data(contexts_data, 'contexts.json')
+    save_data(contexts_data, 'data\\contexts.json')
 
     # Обновляем список контекстов
     contexts = [item['context'] for item in contexts_data]
@@ -748,7 +750,7 @@ async def get_answer(request: Request, question: str = Form(...)):
         # Отправляем запрос на другой эндпоинт для получения ответа
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                "https://helpbotx.onrender.com/get_response",
+                "http://127.0.0.1:8000/get_response",
                 params={"user_id": user_id, "question": question},
                 timeout=20  # Время ожидания ответа
             )
@@ -777,7 +779,7 @@ async def get_answer(request: Request, question: str = Form(...)):
 
 @app.get("/send_files", tags=["download"])
 async def send_files_endpoint():
-    file_paths = ['data.json', 'logs.json', 'contexts.json', 'admin_questions.json', 'users_questions.json']
+    file_paths = ['data\\data.json', 'data\\logs.json', 'data\\contexts.json', 'data\\admin_questions.json', 'data\\users_questions.json']
     await send_files(file_paths)
     return {"message": "Файлы отправлены."}
 
@@ -805,7 +807,7 @@ async def get_info(request: Request, user_id: str = None):
 
     # Сохраняем информацию в файл (например, logs.json) с отступом 4 пробела
     try:
-        with open("logs.json", "r+") as log_file:
+        with open("data\\logs.json", "r+") as log_file:
             # Читаем текущие данные из файла
             try:
                 current_data = json.load(log_file)
@@ -822,7 +824,7 @@ async def get_info(request: Request, user_id: str = None):
 
     except FileNotFoundError:
         # Если файл не существует, создаем новый и записываем данные
-        with open("logs.json", "w") as log_file:
+        with open("data\\logs.json", "w") as log_file:
             json.dump([log_data], log_file, indent=4)
 
     # Возвращаем информацию клиенту
@@ -841,6 +843,76 @@ async def process_request(data: str):
     
     except Exception as e:
         return {"error": str(e)}
+    
+
+@app.get("/live", tags=["main"])
+async def live_request(request: Request, question: str):
+    user_id = request.cookies.get("user_id")
+    question = question.strip()
+    question_history.append(question)
+
+    # Получаем историю чатов пользователя
+    chat_history = get_chat_history(user_id)
+
+    # print('история:')
+    # print(chat_history)
+
+    # Если размер истории вопросов достиг максимального значения, записываем в файл и очищаем
+    if len(question_history) >= MAX_QUESTION_HISTORY_SIZE:
+        await append_question_history_to_file()  # Записываем в файл
+        question_history.clear()  # Очищаем историю вопросов
+
+    # Ищем наиболее подходящий контекст
+    similarities = cosine_similarity(contexts_vectors, contexts_vectorizer.transform([question]))
+    best_index = similarities.argmax()
+    if similarities[best_index] < 0.3:  # Пороговое значение схожести
+        context = None  # Или другой способ обработки
+    else:
+        context = contexts[best_index]
+
+    template = f"""
+    Ты — виртуальная помощница. Отвечай естественно, в виде разговора.
+    Коротко, по делу и без лишних слов. Общайся естественно как девушка, без лишних формальностей.  
+    Ориентируйся на контекст и историю сообщений, чтобы ответ был точным и актуальным.
+    Не используй смайлики и эмоджи в своем ответе.
+
+    История сообщений: {chat_history}  
+    Контекст: {context}  
+    Вопрос: {question}  
+
+    Ответ:
+    """
+
+    # print(f"Контекст: {context}")
+
+    try:
+        # Запрос к модели для генерации ответа
+        response = await g4f.ChatCompletion.create_async(
+            model='gpt-4o-mini',
+            messages=[{"role": "user", "content": template}],
+            provider='PollinationsAI DDG',
+        )
+        
+        created_file = await synthesis(response)
+
+        # Добавляем вопрос и ответ в историю чатов
+        chat_history.append({"role": "user", "content": question})
+        chat_history.append({"role": "assistant", "content": response})
+
+        # Обновляем историю чатов для пользователя
+        chat_history_by_user[user_id] = chat_history
+
+        # Добавляем запись в данные
+        add_entry(data, user_id, chat_history)
+
+        # Сохранение данных в файл
+        save_data(data, file_name)
+        
+    except Exception as e:
+        # Обработка ошибок
+        raise HTTPException(status_code=500, detail=f"Ошибка при генерации ответа: {str(e)}")
+    
+    return {"question": question, "response": response, "created_file": created_file[0]}
 
 
 class AnswerData(BaseModel):
@@ -852,7 +924,7 @@ class AnswerData(BaseModel):
 async def bad_answer_process(request: Request, data: AnswerData):
     user_id = request.cookies.get("user_id") or "anonymous"
 
-    async with aiofiles.open("bad_answers.txt", "a", encoding="utf-8") as file:
+    async with aiofiles.open("data\\bad_answers.txt", "a", encoding="utf-8") as file:
         await file.write(f"User ID: {user_id}\n")
         await file.write(f"User: {data.user}\n")
         await file.write(f"Assistant: {data.assistant}\n")
@@ -958,6 +1030,11 @@ async def get_active_connections_count():
 @app.get("/info", response_class=HTMLResponse, tags=["site"])
 async def read_another_page(request: Request):
     return templates.TemplateResponse("info.html", {"request": request})
+
+
+@app.get("/voice-mode", response_class=HTMLResponse, tags=["site"])
+async def read_another_page(request: Request):
+    return templates.TemplateResponse("voice-mode.html", {"request": request})
 
 
 def main():

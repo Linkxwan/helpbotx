@@ -25,9 +25,10 @@ a {
     /* background-color: rgb(60, 98, 85); */
     padding-bottom: 100px;
 }
-/* .message-content {
-    padding-right: 0px;
-} */
+.message-content p {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
 .chat-message-bot {
     display: flex;
     margin-top: 10px;
@@ -188,7 +189,7 @@ a {
 }
 
 
-.send-button {
+.send-button, .voice-button {
     position: absolute;
     /* padding: 5px; */
     right: .3rem;
@@ -202,9 +203,9 @@ a {
     cursor: pointer;
     transition: background-color 0.3s;
 }
-.send-button:hover {background-color: gray;}
-.send-button:focus {background-color: #666666;}
-#send-button.active {background-color: gray;}
+.send-button, .voice-button:hover {background-color: gray;}
+.send-button, .voice-button:focus {background-color: #666666;}
+/* #send-button, .voice-button.active {background-color: gray;} */
 
 .navbar {
     position: fixed;
@@ -214,6 +215,7 @@ a {
     width: 100%; /* Ширина шторки */
     height: auto;
     background-color: #232323;
+    border-bottom: 1px solid #444444;
     /* border-bottom: 1px solid dimgray; */
     z-index: 1000; /* Установка z-index, чтобы шторка оказалась поверх контента */
     
@@ -240,7 +242,9 @@ a {
     display: none;
 }
 
-
+.long-title {
+    cursor: pointer;
+}
 
 
 
@@ -383,7 +387,7 @@ background-color: #444;
         display: block;
     }
 }
-@media screen and (max-width: 409px) {
+@media screen and (max-width: 470px) {
     .long-version {
         display: none;
     }
